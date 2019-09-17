@@ -35,6 +35,7 @@ Run with default settings:
 docker run -it --rm \
  --shm-size 256m \
  --stop-timeout 60 \
+ -v /var/run/docker.sock:/var/run/docker.sock:ro \
  --name vnc \
  --network bridge \
  -p 6080:6080/tcp \
@@ -48,6 +49,7 @@ docker run -dit \
  -e "DISPLAY_WIDTH=1920" \
  -e "DISPLAY_HEIGHT=899" \
  -e "VNC_PASS=123456" \
+ -v /var/run/docker.sock:/var/run/docker.sock:ro \
  --name vnc \
  --network=bridge \
  -p 6080:6080/tcp \
