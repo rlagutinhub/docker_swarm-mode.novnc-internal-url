@@ -329,7 +329,7 @@ def main():
         sys.exit(1)
 
     # print('properties:', properties)
-    # print('output      :', output)
+    # print('output    :', output)
     # print('mode      :', mode)
     
     if mode == 'wait' or mode == 'w':
