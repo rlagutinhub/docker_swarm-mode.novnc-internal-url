@@ -286,11 +286,9 @@ def configure():
 def loop():
 
     try:
-        if properties:
-
-            while True:
-                configure()
-                time.sleep(int(CONF_TIMEOUT))
+        while True:
+            configure()
+            time.sleep(int(CONF_TIMEOUT))
 
     except KeyboardInterrupt:
         pass
