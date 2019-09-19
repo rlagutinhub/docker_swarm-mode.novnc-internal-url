@@ -27,12 +27,10 @@ import docker
 import requests
 
 
-# Var
 mode = False
 output = False
 properties = False
 
-# Const
 CONF_TIMEOUT = 60
 
 
