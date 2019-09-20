@@ -178,28 +178,30 @@ def service_get(srv_name, proto, port, url_appned):
         else:
             service_mode_check = False
 
-        if service_name.lower() == srv_name.lower():
+        if service_name.lower() == srv_name.lower() and service_mode_check:
 
             service_col_tmp = dict()
 
-            for service_task in service_tasks:
+            if service_tasks:
 
-                service_col_tmp['task'] = service_name
+                for service_task in service_tasks:
 
-                if service_mode_check == 'Replicated':
-                   service_col_tmp['slot'] = service_task['Slot']
-                elif service_mode_check == 'Global':
-                   service_col_tmp['slot'] = service_task['NodeID']
+                    service_col_tmp['task'] = service_name
 
-                service_col_tmp['id'] = service_task['Task_ID']
-                service_col_tmp['proto'] = proto
-                service_col_tmp['port'] = port
-                service_col_tmp['url_appned'] = url_appned
+                    if service_mode_check == 'Replicated':
+                        service_col_tmp['slot'] = service_task['Slot']
+                    elif service_mode_check == 'Global':
+                        service_col_tmp['slot'] = service_task['NodeID']
 
-                service_col.append(service_col_tmp.copy())
-                service_col_tmp.clear()
+                    service_col_tmp['id'] = service_task['Task_ID']
+                    service_col_tmp['proto'] = proto
+                    service_col_tmp['port'] = port
+                    service_col_tmp['url_appned'] = url_appned
 
-            return service_col
+                    service_col.append(service_col_tmp.copy())
+                    service_col_tmp.clear()
+
+                return service_col
 
     return False
 
@@ -230,21 +232,23 @@ def configure():
 
     html = "<html>" \
         "<head>" \
-        "<meta charset='utf-8' http-equiv='refresh' content='10'>" \
-        "<title>Listing docker services url</title>" \
+        "<meta charset='utf-8' http-equiv='refresh' content='30'>" \
+        "<title>Listing docker services internal url</title>" \
         "<style type='text/css'>" \
-        "body {background-color: white; text-align: left; padding: 50px; font-family: 'Open Sans','Helvetica Neue', Helvetica, Arial, sans-serif;}" \
-        "a {color: #0066CC; text-decoration:none;}" \
-        "a:hover {color: black}" \
-        "table {width: 100%; margin: 0px; padding: 0px; border-collapse: collapse; border: 1px solid #F0F4FF;}" \
-        "th {font-weight:bold; background-color: #F0F4FF; color: #0066CC; border: 1px solid #F0F4FF; margin: 10px; padding: 7px; text-align: center;}" \
-        "td {background-color: white; border: 1px solid #F0F4FF; margin: 10px; padding: 10px; text-align: left;}" \
-        "td:first-child {width: 80%; text-align: left;}" \
+        "body {background-color: #F5F5F5; text-align: left; padding: 50px; font-family: 'courier new', arial, sans-serif;}" \
+        "a {color: #000000; text-decoration:none;}" \
+        "a:hover {color: #000000}" \
+        "table {width: 100%; margin: 0px; padding: 0px; border-collapse: collapse; border: 1px solid #7499FF;}" \
+        "th {font-weight:bold; background-color: #7499FF; color: #000000; border: 1px solid #7499FF; margin: 10px; padding: 7px; text-align: center;}" \
+        "td {background-color: white; border: 1px solid #7499FF; margin: 10px; padding: 10px; text-align: left;}" \
+        "td:first-child {width: 85%; text-align: left;}" \
+        "td.link_ok:hover {background-color: #6EE570;}" \
+        "td.link_err:hover {background-color: #E97659;}" \
         "</style>" \
         "</head>" \
         "<body>"
     
-    html += "<h2>Listing docker services url</h2>"
+    html += "<h2>Listing docker services internal url</h2>"
     html += "<br><hr><br><center>"
 
     html += "<table>" \
@@ -259,17 +263,19 @@ def configure():
         if service_data:
 
             for service_task in service_data:
-                url_str = str(service_task["proto"]) + '//' + str(service_task["task"]) + '.' + str(service_task["slot"]) + '.' + str(service_task["id"]) + ':' + str(service_task["port"]) + str(service_task["url_appned"])
-                url_status = check_url(url_str)
+                url_name = str(service_task["proto"]) + '://' + str(service_task["task"]) + '.' + str(service_task["slot"]) + '.' + str(service_task["id"]) + ':' + str(service_task["port"]) + str(service_task["url_appned"])
+                url_path = str(service_task["proto"]) + '://' + str(service_task["task"]) + '.' + str(service_task["slot"]) + '.' + str(service_task["id"]) + ':' + str(service_task["port"]) + str(service_task["url_appned"])
+                url_status = check_url(url_path)
 
-                if url_str and url_status:
-
-                    html += "<tr>"
-                    html += "<td><a href='{url_str}' target='_blank'>{url_str}</a></td>".format(url_str=url_str)
+                if url_name and url_path and url_status:
 
                     if url_status == 200:
+                        html += "<tr>"
+                        html += "<td class=link_ok><a href='{url_path}' target='_blank'>{url_name}</a></td>".format(url_path=url_path, url_name=url_name)
                         html += "<td><font color=green>{url_status}</font></td>".format(url_status=url_status)
                     else:
+                        html += "<tr>"
+                        html += '<td class=link_err><a href="{url_path}" target="_blank">{url_name}</a></td>'.format(url_path=url_path, url_name=url_name)
                         html += "<td><font color=red>{url_status}</font></td>".format(url_status=url_status)
 
                     html += "</tr>"
