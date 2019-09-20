@@ -208,7 +208,7 @@ def output_gen(data, file):
     with open(file, 'wt') as f:
         f.write(data)
 
-    # os.chmod(scrpath, 0o777)
+    # os.chmod(file, 0o777)
 
     if os.path.exists(file) and os.path.isfile(file):
         return True
@@ -326,7 +326,7 @@ def main():
         pass
 
     if not properties or not output or not mode in ('wait', 'once', 'w', '1'):
-        print('docker.novnc.listing.srv.url.py -p <path-to-properties-file> -o <path-to-output-file> -m [w|1]')
+        print('./docker-services.internal-url.py -p <path-to-properties-file> -o <path-to-output-file> -m [w|1]')
         sys.exit(1)
 
     # print('properties:', properties)
