@@ -125,15 +125,19 @@ def check_url(url):
 
     try:
         request = requests.get(url, timeout=10, verify=False)
+
         # if request.status_code == 200:
         #     print('Web site exists')
         # else:
         #     print('Website returned response code: {code}'.format(code=request.status_code))
-        print('{url}: {code}'.format(code=request.status_code))
+
+        print('{code}: {url}'.format(code=request.status_code, url=url))
         return request.status_code
 
     except:
         # print('Web site does not exist')
+
+        print('{code}: {url}'.format(code='404', url=url))
         return 404
 
 def services_id():
