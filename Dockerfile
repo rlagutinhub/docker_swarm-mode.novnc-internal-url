@@ -19,8 +19,16 @@ RUN set -ex; \
     openssl \
     conky \
     procps \
+    python3 \
+    python3-devel \
+    python3-pip \
     supervisor; \
     yum clean all
+
+# pip
+RUN set ex; \
+    pip3 install -U \
+    docker
 
 # tz
 RUN set -ex; \
