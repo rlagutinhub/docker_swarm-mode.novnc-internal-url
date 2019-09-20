@@ -56,7 +56,7 @@ docker run -dit \
  docker.novnc:latest
 ```
 
-![alt text](https://raw.githubusercontent.com/rlagutinhub/docker.novnc/master/screen1.png)
+![alt text](https://raw.githubusercontent.com/rlagutinhub/docker.novnc-internal-url/master/screen1.png)
 
 ### Composition
 Run with custom settings:
@@ -85,7 +85,7 @@ services:
 ### Result
 Open a browser and see the `xterm` and `firefox` demo at `http://<server>:6080`
 
-![alt text](https://raw.githubusercontent.com/rlagutinhub/docker.novnc/master/screen2.png)
+![alt text](https://raw.githubusercontent.com/rlagutinhub/docker.novnc-internal-url/master/screen2.png)
 
 ## On DockerHub / GitHub
 ___
