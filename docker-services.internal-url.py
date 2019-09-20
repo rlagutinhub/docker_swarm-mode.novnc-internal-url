@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 # -*- coding: UTF-8 -*-
 
-# NAME:   DOCKER.NOVNC.LISTING.SRV.URL.PY
-# DESC:   GEN HTML WITH LISTING DOCKER SERVICES URL
-# DATE:   17-09-2019
+# NAME:   DOCKER-SERVICES.INTERNAL-URL.PY
+# DESC:   GENERATE HTML WITH LISTING DOCKER SERVICES INTERNAL URL
+# DATE:   20-09-2019
 # LANG:   PYTHON 3
 # AUTHOR: LAGUTIN R.A.
 # EMAIL:  RLAGUTIN@MTA4.RU
 
 # Examples:
-#     /usr/bin/python3 /app/docker.novnc.listing.srv.url.py -p <path-to-properties-file> -o <path-to-output-file> -m [w|1]
+#     /usr/bin/python3 /app/docker-services.internal-url.py -p <path-to-properties-file> -o <path-to-output-file> -m [w|1]
 
 # Properties:
 # [
@@ -121,8 +121,6 @@ def check_url(url):
     if not url:
         return False
 
-    print(url)
-
     requests.packages.urllib3.disable_warnings()
 
     try:
@@ -131,6 +129,7 @@ def check_url(url):
         #     print('Web site exists')
         # else:
         #     print('Website returned response code: {code}'.format(code=request.status_code))
+        print('{url}: {code}'.format(code=request.status_code))
         return request.status_code
 
     except:
