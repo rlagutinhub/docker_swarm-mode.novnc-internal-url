@@ -35,8 +35,8 @@ You can specify the following variables:
 ```vim docker-services.internal-url.json```
 * `srv_name` - need to specify service name
 * `proto` - need to specify http or https protocol
-* `port` - need to specify used tcp port, for example 8080
-* `url_appned` - appned url, for example /console
+* `port` - need to specify used tcp port (for example 8080)
+* `url_appned` - appned url (for example /console)
 ```console
 [
     {"srv_name": "hello1", "proto": "http", "port": "8000", "url_appned": "/"},
