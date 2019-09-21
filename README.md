@@ -18,7 +18,7 @@ This image is intended to be used for displaying x11 applications from container
 * [supervisord](http://supervisord.org) - to keep it all running
 
 Build image:
-`docker build -f Dockerfile -t docker.novnc .`
+`docker build -f Dockerfile -t docker_swarm-mode.novnc-internal-url .`
 
 ## Usage
 
