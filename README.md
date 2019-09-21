@@ -29,61 +29,72 @@ You can specify the following variables:
 * `DISPLAY_HEIGHT=<height>` (768)
 * `VNC_PASS=<password>` (passw0rd)
 
-### Standalone
-Run with default settings:
-```bash
-docker run -it --rm \
- --shm-size 256m \
- --stop-timeout 60 \
- -v /var/run/docker.sock:/var/run/docker.sock:ro \
- --name vnc \
- --network bridge \
- -p 6080:6080/tcp \
- docker.novnc:latest
-```
+### Run on Docker Swarm Mode
 Run with custom settings:
+`docker stack deploy --compose-file docker-compose.yml vnc`
 ```bash
-docker run -dit \
- --shm-size 256m \
- --stop-timeout 60 \
- -e "DISPLAY_WIDTH=1920" \
- -e "DISPLAY_HEIGHT=899" \
- -e "VNC_PASS=123456" \
- -v /var/run/docker.sock:/var/run/docker.sock:ro \
- --name vnc \
- --network=bridge \
- -p 6080:6080/tcp \
- docker.novnc:latest
+version: '3.7'
+services:
+  app:
+    image: rlagutinhub/docker_swarm-mode.novnc-internal-url:latest
+    networks:
+      - proxy
+    environment:
+      - "DISPLAY_WIDTH=1920"
+      - "DISPLAY_HEIGHT=899"
+      - "VNC_PASS=123456"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    configs:
+      - source: vnc_docker-services.internal-url.json.2019-09-21
+        target: /app/docker-services.internal-url.json
+    shm_size: 256mb
+    stop_grace_period: 1m
+    deploy:
+      # mode: global
+      replicas: 1
+      update_config:
+        parallelism: 1
+        delay: 10s
+        order: start-first
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 3
+        window: 120s
+      labels:
+        # https://docs.traefik.io/configuration/backends/docker/#on-containers
+        - "traefik.enable=true"
+        - "traefik.port=6080"
+        # - "traefik.weight=10"
+        - "traefik.frontend.rule=Host:vnc.docker.example.com,vnc.docker.test.example.com"
+        # - "traefik.frontend.rule=Host:vnc.docker.example.com,vnc.docker.test.example.com;PathPrefixStrip:/app"
+        - "traefik.frontend.entryPoints=http"
+        # - "traefik.frontend.entryPoints=http,https"
+        # - "traefik.frontend.headers.SSLRedirect=true"
+        # - "traefik.frontend.auth.basic.users=root:$$apr1$$mLRjS/wr$$QqrALWNDgW9alDmnb9DeK1"
+        # - "traefik.backend.loadbalancer.stickiness=true"
+        - "traefik.backend.loadbalancer.method=wrr"
+      placement:
+        constraints:
+          - node.role == manager
+          # - node.role == worker
+          # - node.labels.novnc == true
+networks:
+  proxy:
+    external: true
+# volumes:
+  # logs:
+    # external: true
+configs:
+  vnc_docker-services.internal-url.json.2019-09-21:
+    external: true
 ```
 
 ![alt text](https://raw.githubusercontent.com/rlagutinhub/docker.novnc-internal-url/master/screen1.png)
 
-### Composition
-Run with custom settings:
-* `docker-compose -f docker-compose.yml -p "vnc" up --build -d`
-* `docker-compose -f docker-compose.yml -p "vnc" ps`
-* `docker-compose -f docker-compose.yml -p "vnc" stop`
-* `docker-compose -f docker-compose.yml -p "vnc" rm`
-```bash
-version: '3.7'
-services:
-  vnc:
-    image: docker.novnc:latest
-    container_name: vnc
-    shm_size: 256mb
-    stop_grace_period: 1m
-    network_mode: bridge
-    # restart: always
-    environment:
-      - DISPLAY_WIDTH=1920
-      - DISPLAY_HEIGHT=899
-      - VNC_PASS=123456
-    ports:
-      - 6080:6080/tcp
-```
-
 ### Result
-Open a browser and see the `xterm` and `firefox` demo at `http://<server>:6080`
+Open a browser and see the `xterm` and `firefox` demo at `http://<server>`
 
 ![alt text](https://raw.githubusercontent.com/rlagutinhub/docker.novnc-internal-url/master/screen2.png)
 
