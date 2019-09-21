@@ -274,12 +274,12 @@ def configure():
                         html += "<tr>"
                         html += "<td class=link_ok><a href='{url_path}' target='_blank'>{url_name}</a></td>".format(url_path=url_path, url_name=url_name)
                         html += "<td><font color=green>{url_status}</font></td>".format(url_status=url_status)
+                        html += "</tr>"
                     else:
                         html += "<tr>"
                         html += '<td class=link_err><a href="{url_path}" target="_blank">{url_name}</a></td>'.format(url_path=url_path, url_name=url_name)
                         html += "<td><font color=red>{url_status}</font></td>".format(url_status=url_status)
-
-                    html += "</tr>"
+                        html += "</tr>"
 
     html += "</table></div>"
     html += "</center><br>" \
