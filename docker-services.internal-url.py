@@ -3,7 +3,7 @@
 
 # NAME:   DOCKER-SERVICES.INTERNAL-URL.PY
 # DESC:   GENERATE HTML WITH LISTING DOCKER SERVICES INTERNAL URL
-# DATE:   20-09-2019
+# DATE:   21-09-2019
 # LANG:   PYTHON 3
 # AUTHOR: LAGUTIN R.A.
 # EMAIL:  RLAGUTIN@MTA4.RU
@@ -109,7 +109,6 @@ class DockerServiceClass(object):
                     col_tasks.append(col_task.copy())
                     col_task.clear()
 
-            # print(json.dumps(col_tasks, indent=4))
             return col_tasks
 
         else:
@@ -161,7 +160,6 @@ def service_get(srv_name, proto, port, url_appned):
 
         service = DockerServiceClass(service_id)
         service_name = service.get_name()
-        # service_labels = service.get_labels()
         service_tasks = service.get_tasks()
         service_mode = service.get_mode()
 
@@ -235,23 +233,26 @@ def configure():
         "<meta charset='utf-8' http-equiv='refresh' content='30'>" \
         "<title>Listing docker services internal url</title>" \
         "<style type='text/css'>" \
-        "body {background-color: #F5F5F5; text-align: left; padding: 50px; font-family: 'courier new', arial, sans-serif;}" \
+        "body {background-color: #F5F5F5; text-align: left; padding-left: 50px; padding-right: 50px; font-family: 'dejavu sans light', 'courier new';}" \
         "a {color: #000000; text-decoration:none;}" \
         "a:hover {color: #000000}" \
         "table {width: 100%; margin: 0px; padding: 0px; border-collapse: collapse; border: 1px solid #7499FF;}" \
-        "th {font-weight:bold; background-color: #7499FF; color: #000000; border: 1px solid #7499FF; margin: 10px; padding: 7px; text-align: center;}" \
+        "th {font-weight:bold; background-color: #7499FF; color: #000000; border: 1px solid #7499FF; margin: 10px; padding: 10px; text-align: center;}" \
         "td {background-color: white; border: 1px solid #7499FF; margin: 10px; padding: 10px; text-align: left;}" \
         "td:first-child {width: 85%; text-align: left;}" \
         "td.link_ok:hover {background-color: #6EE570;}" \
         "td.link_err:hover {background-color: #E97659;}" \
+        "hr {height: 12px; border: 0; box-shadow: inset 0 15px 12px -11px rgba(0,0,0,0.15);}" \
+        "#head {width: 100%; height: 60px; position: fixed; top: 0px; left: 56px; background: #F5F5F5;}" \
+        "#content {margin-top: 60px;}" \
         "</style>" \
         "</head>" \
         "<body>"
     
-    html += "<h2>Listing docker services internal url</h2>"
-    html += "<br><hr><br><center>"
+    html += "<div id='head'><h2>Listing docker services internal url</h2>" \
+        "</div><center>"
 
-    html += "<table>" \
+    html += "<div id='content'><hr><table>" \
         "<tr><td><b>URL</b></td><td><b>RESPONSE CODE</b></td></tr>"
 
     for propertie in properties_data:
@@ -280,8 +281,7 @@ def configure():
 
                     html += "</tr>"
 
-    html += "</table>"
-
+    html += "</table></div>"
     html += "</center><br>" \
         "</body>" \
         "</html>"
