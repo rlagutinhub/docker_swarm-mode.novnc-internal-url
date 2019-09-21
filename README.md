@@ -45,7 +45,7 @@ You can specify the following variables:
 ]
 ```
 
-### Docker Swarm Mode
+### Swarm Mode
 Run with custom settings:
 `docker stack deploy --compose-file docker-compose.yml vnc`
 ```console
