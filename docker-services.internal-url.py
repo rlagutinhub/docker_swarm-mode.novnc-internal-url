@@ -24,6 +24,7 @@ import json
 import time
 import getopt
 import docker
+import socket
 import requests
 
 
@@ -142,6 +143,15 @@ def check_url(url):
 
         print('{code}: {url}'.format(code='404', url=url))
         return 404
+
+def ip_get(name):
+
+    try:
+        ip = socket.gethostbyname(str(name))
+        return ip
+
+    except:
+        return False
 
 def services_id():
 
@@ -268,8 +278,15 @@ def configure():
         if service_data:
 
             for service_task in service_data:
-                url_name = str(service_task["proto"]) + '://' + str(service_task["task"]) + '.' + str(service_task["slot"]) + '.' + str(service_task["id"]) + ':' + str(service_task["port"]) + str(service_task["url_append"])
-                url_path = str(service_task["proto"]) + '://' + str(service_task["task"]) + '.' + str(service_task["slot"]) + '.' + str(service_task["id"]) + ':' + str(service_task["port"]) + str(service_task["url_append"])
+
+                dns_name = str(service_task["task"]) + '.' + str(service_task["slot"]) + '.' + str(service_task["id"])
+                ip_name = ip_get(dns_name)
+
+                if not ip_name:
+                    ip_name = dns_name
+
+                url_name = str(service_task["proto"]) + '://' + dns_name + ':' + str(service_task["port"]) + str(service_task["url_append"])
+                url_path = str(service_task["proto"]) + '://' + ip_name + ':' + str(service_task["port"]) + str(service_task["url_append"])
                 url_status = check_url(url_path)
 
                 if url_name and url_path and url_status:
@@ -361,4 +378,3 @@ if __name__ == '__main__':
         sys.exit(1)
 
     sys.exit(main())
-   
