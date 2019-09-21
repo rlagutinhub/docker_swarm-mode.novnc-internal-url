@@ -31,7 +31,18 @@ You can specify the following variables:
 * `DISPLAY_HEIGHT=<height>` (768)
 * `VNC_PASS=<password>` (passw0rd)
 
-### Run on Docker Swarm Mode
+### Properties
+```vim docker-services.internal-url.json```
+
+```console
+[
+    {"srv_name": "hello1", "proto": "http", "port": "8000", "url_appned": "/"},
+    {"srv_name": "hello2", "proto": "http", "port": "8000", "url_appned": "/"},
+    {"srv_name": "hello3", "proto": "https", "port": "8000", "url_appned": "/"}
+]
+```
+
+### Docker Swarm Mode
 Run with custom settings:
 `docker stack deploy --compose-file docker-compose.yml vnc`
 ```bash
