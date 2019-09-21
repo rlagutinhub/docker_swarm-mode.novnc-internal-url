@@ -13,9 +13,9 @@
 
 # Properties:
 # [
-#     {"srv_name": "hello1", "proto": "http", "port": "8000", "url_appned": "/"},
-#     {"srv_name": "hello2", "proto": "http", "port": "8000", "url_appned": "/"},
-#     {"srv_name": "hello3", "proto": "https", "port": "8000", "url_appned": "/"}
+#     {"srv_name": "hello1", "proto": "http", "port": "8000", "url_append": "/"},
+#     {"srv_name": "hello2", "proto": "http", "port": "8000", "url_append": "/"},
+#     {"srv_name": "hello3", "proto": "https", "port": "8000", "url_append": "/"}
 # ]
 
 import os
@@ -149,11 +149,11 @@ def services_id():
 
     return service_col
 
-def service_get(srv_name, proto, port, url_appned):
+def service_get(srv_name, proto, port, url_append):
 
     service_col = list()
 
-    if not srv_name or not proto or not port or not url_appned:
+    if not srv_name or not proto or not port or not url_append:
         return False
 
     for service_id in services_id():
@@ -194,7 +194,7 @@ def service_get(srv_name, proto, port, url_appned):
                     service_col_tmp['id'] = service_task['Task_ID']
                     service_col_tmp['proto'] = proto
                     service_col_tmp['port'] = port
-                    service_col_tmp['url_appned'] = url_appned
+                    service_col_tmp['url_append'] = url_append
 
                     service_col.append(service_col_tmp.copy())
                     service_col_tmp.clear()
@@ -257,15 +257,15 @@ def configure():
 
     for propertie in properties_data:
     
-        service_data = service_get(propertie["srv_name"], propertie["proto"], propertie["port"], propertie["url_appned"])
+        service_data = service_get(propertie["srv_name"], propertie["proto"], propertie["port"], propertie["url_append"])
 
         html += "<tr><th colspan='2'>{srv_name}</th></tr>".format(srv_name=propertie["srv_name"])
 
         if service_data:
 
             for service_task in service_data:
-                url_name = str(service_task["proto"]) + '://' + str(service_task["task"]) + '.' + str(service_task["slot"]) + '.' + str(service_task["id"]) + ':' + str(service_task["port"]) + str(service_task["url_appned"])
-                url_path = str(service_task["proto"]) + '://' + str(service_task["task"]) + '.' + str(service_task["slot"]) + '.' + str(service_task["id"]) + ':' + str(service_task["port"]) + str(service_task["url_appned"])
+                url_name = str(service_task["proto"]) + '://' + str(service_task["task"]) + '.' + str(service_task["slot"]) + '.' + str(service_task["id"]) + ':' + str(service_task["port"]) + str(service_task["url_append"])
+                url_path = str(service_task["proto"]) + '://' + str(service_task["task"]) + '.' + str(service_task["slot"]) + '.' + str(service_task["id"]) + ':' + str(service_task["port"]) + str(service_task["url_append"])
                 url_status = check_url(url_path)
 
                 if url_name and url_path and url_status:
@@ -357,3 +357,4 @@ if __name__ == '__main__':
         sys.exit(1)
 
     sys.exit(main())
+   
