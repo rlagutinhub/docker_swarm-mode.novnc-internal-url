@@ -101,7 +101,10 @@ class DockerServiceClass(object):
                         except KeyError:
                             net_task['Net_DrvName'] = 'None'
 
-                        net_task['Net_Addr'] = net['Addresses']
+                        try:
+                            net_task['Net_Addr'] = net['Addresses']
+                        except KeyError:
+                            net_task['Net_Addr'] = 'None'
 
                         col_task['NetworksAttachment'].append(net_task.copy())
                         net_task.clear()
