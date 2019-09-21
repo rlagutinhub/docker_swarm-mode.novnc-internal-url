@@ -112,6 +112,7 @@ class DockerServiceClass(object):
                     col_tasks.append(col_task.copy())
                     col_task.clear()
 
+            # print(json.dumps(col_tasks, indent=4))
             return col_tasks
 
         else:
