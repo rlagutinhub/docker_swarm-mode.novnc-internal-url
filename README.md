@@ -39,9 +39,9 @@ You can specify the following variables:
 * `url_appned` - appned url (for example /console)
 ```console
 [
-    {"srv_name": "hello1", "proto": "http", "port": "8000", "url_appned": "/"},
-    {"srv_name": "hello2", "proto": "http", "port": "8000", "url_appned": "/"},
-    {"srv_name": "hello3", "proto": "https", "port": "8000", "url_appned": "/"}
+    {"srv_name": "hello1", "proto": "http", "port": "8000", "url_append": "/"},
+    {"srv_name": "hello2", "proto": "http", "port": "8000", "url_append": "/"},
+    {"srv_name": "hello3", "proto": "https", "port": "8000", "url_append": "/"}
 ]
 ```
 
