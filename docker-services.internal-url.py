@@ -144,7 +144,7 @@ def check_url(url):
         print('{code}: {url}'.format(code='404', url=url))
         return 404
 
-def ip_get(name):
+def get_ip(name):
 
     try:
         ip = socket.gethostbyname(str(name))
@@ -280,7 +280,7 @@ def configure():
             for service_task in service_data:
 
                 dns_name = str(service_task["task"]) + '.' + str(service_task["slot"]) + '.' + str(service_task["id"])
-                ip_name = ip_get(dns_name)
+                ip_name = get_ip(dns_name)
 
                 if not ip_name:
                     ip_name = dns_name
