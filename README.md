@@ -116,5 +116,5 @@ Open a browser and see the `xterm` and `firefox` demo at `http://<server>`
 
 ## On DockerHub / GitHub
 ___
-* DockerHub [rlagutinhub/docker.novnc](https://hub.docker.com/r/rlagutinhub/docker.novnc)
-* GitHub [rlagutinhub/docker.novnc](https://github.com/rlagutinhub/docker.novnc)
+* DockerHub [rlagutinhub/docker_swarm-mode.novnc-internal-url](https://hub.docker.com/r/rlagutinhub/docker_swarm-mode.novnc-internal-url)
+* GitHub [rlagutinhub/docker_swarm-mode.novnc-internal-url](https://github.com/rlagutinhub/docker_swarm-mode.novnc-internal-url)
