@@ -1,15 +1,56 @@
 version: '3.7'
 services:
-  vnc:
-    image: docker.novnc:latest
-    container_name: vnc
+  app:
+    image: rlagutinhub/docker_swarm-mode.novnc-internal-url:latest
+    networks:
+      - proxy
+    environment:
+      - "DISPLAY_WIDTH=1920"
+      - "DISPLAY_HEIGHT=899"
+      - "VNC_PASS=123456"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    configs:
+      - source: vnc_docker-services.internal-url.json.2019-09-21
+        target: /app/docker-services.internal-url.json
     shm_size: 256mb
     stop_grace_period: 1m
-    network_mode: bridge
-    # restart: always
-    environment:
-      - DISPLAY_WIDTH=1920
-      - DISPLAY_HEIGHT=899
-      - VNC_PASS=123456
-    ports:
-      - 6080:6080/tcp
+    deploy:
+      # mode: global
+      replicas: 1
+      update_config:
+        parallelism: 1
+        delay: 10s
+        order: start-first
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 3
+        window: 120s
+      labels:
+        # https://docs.traefik.io/configuration/backends/docker/#on-containers
+        - "traefik.enable=true"
+        - "traefik.port=6080"
+        # - "traefik.weight=10"
+        - "traefik.frontend.rule=Host:vnc.docker.example.com,vnc.docker.test.example.com"
+        # - "traefik.frontend.rule=Host:vnc.docker.example.com,vnc.docker.test.example.com;PathPrefixStrip:/app"
+        - "traefik.frontend.entryPoints=http"
+        # - "traefik.frontend.entryPoints=http,https"
+        # - "traefik.frontend.headers.SSLRedirect=true"
+        # - "traefik.frontend.auth.basic.users=root:$$apr1$$mLRjS/wr$$QqrALWNDgW9alDmnb9DeK1"
+        # - "traefik.backend.loadbalancer.stickiness=true"
+        - "traefik.backend.loadbalancer.method=wrr"
+      placement:
+        constraints:
+          - node.role == manager
+          # - node.role == worker
+          # - node.labels.novnc == true
+networks:
+  proxy:
+    external: true
+# volumes:
+  # logs:
+    # external: true
+configs:
+  vnc_docker-services.internal-url.json.2019-09-21:
+    external: true
