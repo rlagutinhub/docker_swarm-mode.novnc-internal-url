@@ -32,6 +32,7 @@ mode = False
 output = False
 properties = False
 
+URL_TIMEOUT = 10
 CONF_TIMEOUT = 60
 
 
@@ -128,7 +129,7 @@ def check_url(url):
     requests.packages.urllib3.disable_warnings()
 
     try:
-        request = requests.get(url, timeout=10, verify=False)
+        request = requests.get(url, timeout=int(URL_TIMEOUT), verify=False)
 
         # if request.status_code == 200:
         #     print('Web site exists')
@@ -303,7 +304,6 @@ def configure():
                         html += "<td class=link_ok><a href='{url_path}' target='_blank'>{url_name}</a></td>".format(url_path=url_path, url_name=url_name)
                         html += "<td><font color=green>{url_status}</font></td>".format(url_status=url_status)
                         html += "</tr>"
-
                     else:
                         html += "<tr>"
                         html += '<td class=link_err><a href="{url_path}" target="_blank">{url_name}</a></td>'.format(url_path=url_path, url_name=url_name)
