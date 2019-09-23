@@ -146,6 +146,9 @@ def check_url(url):
 
 def get_ip(name):
 
+    if not name:
+        return False
+
     try:
         ip = socket.gethostbyname(str(name))
         return ip
@@ -165,10 +168,10 @@ def services_id():
 
 def service_get(srv_name, proto, port, url_append):
 
-    service_col = list()
-
     if not srv_name or not proto or not port or not url_append:
         return False
+
+    service_col = list()
 
     for service_id in services_id():
 
@@ -202,6 +205,7 @@ def service_get(srv_name, proto, port, url_append):
 
                     if service_mode_check == 'Replicated':
                         service_col_tmp['slot'] = service_task['Slot']
+
                     elif service_mode_check == 'Global':
                         service_col_tmp['slot'] = service_task['NodeID']
 
@@ -218,6 +222,9 @@ def service_get(srv_name, proto, port, url_append):
     return False
 
 def output_gen(data, file):
+
+    if not data or not file:
+        return False
 
     with open(file, 'wt') as f:
         f.write(data)
@@ -285,8 +292,8 @@ def configure():
                 if not ip_name:
                     ip_name = dns_name
 
-                url_name = str(service_task["proto"]) + '://' + dns_name + ':' + str(service_task["port"]) + str(service_task["url_append"])
-                url_path = str(service_task["proto"]) + '://' + ip_name + ':' + str(service_task["port"]) + str(service_task["url_append"])
+                url_name = str(service_task["proto"]) + '://' + str(dns_name) + ':' + str(service_task["port"]) + str(service_task["url_append"])
+                url_path = str(service_task["proto"]) + '://' + str(ip_name) + ':' + str(service_task["port"]) + str(service_task["url_append"])
                 url_status = check_url(url_path)
 
                 if url_name and url_path and url_status:
@@ -296,6 +303,7 @@ def configure():
                         html += "<td class=link_ok><a href='{url_path}' target='_blank'>{url_name}</a></td>".format(url_path=url_path, url_name=url_name)
                         html += "<td><font color=green>{url_status}</font></td>".format(url_status=url_status)
                         html += "</tr>"
+
                     else:
                         html += "<tr>"
                         html += '<td class=link_err><a href="{url_path}" target="_blank">{url_name}</a></td>'.format(url_path=url_path, url_name=url_name)
@@ -303,6 +311,7 @@ def configure():
                         html += "</tr>"
 
     html += "</table></div>"
+
     html += "</center><br>" \
         "</body>" \
         "</html>"
