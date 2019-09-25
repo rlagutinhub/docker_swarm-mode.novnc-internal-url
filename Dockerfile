@@ -22,6 +22,7 @@ RUN set -ex; \
     python3 \
     python3-devel \
     python3-pip \
+    rootfiles \
     supervisor; \
     yum clean all
 
