@@ -61,10 +61,13 @@ services:
       - "VNC_PASS=123456"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
+      - type: tmpfs
+        target: /dev/shm
+        tmpfs:
+          size: 268435456 # 256MB
     configs:
       - source: vnc_docker-services.internal-url.json.2019-09-21
         target: /app/docker-services.internal-url.json
-    shm_size: 256mb
     stop_grace_period: 1m
     deploy:
       # mode: global
